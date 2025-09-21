@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personalized Trip Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-900 text-white">
+
+    <div id="app" class="min-h-screen">
+        <header class="bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50 shadow-lg">
+            <div class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+                <div class="text-xl md:text-2xl font-bold text-white tracking-wider">
+                    <i class="fas fa-plane-departure mr-2 text-cyan-400"></i>
+                    AI Trip Planner
+                </div>
+                <nav class="hidden sm:flex bg-slate-800 p-1 rounded-full">
+                    <button class="nav-btn px-4 py-2 text-sm font-semibold rounded-full active" data-page="planner-page">Planner</button>
+                    <button class="nav-btn px-4 py-2 text-sm font-semibold rounded-full" data-page="discover-page">Discover</button>
+                    <button class="nav-btn px-4 py-2 text-sm font-semibold rounded-full" data-page="profile-page">Profile</button>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 sm:px-6 py-8">
+            <div id="planner-page" class="page active">
+                <section id="input-section" class="hero-bg rounded-2xl p-6 md:p-12 shadow-2xl">
+                    <div class="max-w-3xl mx-auto text-center">
+                        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Craft Your Perfect Journey</h1>
+                        <p class="text-lg text-slate-300 mb-8">Use our AI to build a hyper-personalized itinerary just for you.</p>
+                        <form id="trip-form" class="space-y-6 text-left">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-200 mb-2">What's your travel vibe?</label>
+                                <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
+                                    <div class="mood-image rounded-lg overflow-hidden aspect-square" data-vibe="Adventure">
+                                        <img src="https://images.unsplash.com/photo-1542359649-31e03cd4d909?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YWR2ZW50dXJlfGVufDB8fDB8fHww" alt="Adventure" class="w-full h-full object-cover">
+                                        <div class="overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white font-bold p-1">
+                                            <i class="fas fa-hiking mb-2 text-2xl"></i>
+                                            <span class="text-center text-sm">Adventure</span>
+                                        </div>
+                                    </div>
+                                    <div class="mood-image rounded-lg overflow-hidden aspect-square" data-vibe="Relaxation">
+                                        <img src="https://images.unsplash.com/photo-1559414131-b0aa53919648?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cmVsYXhhdGlvbnxlbnwwfHwwfHx8MA%3D%3D" alt="Relaxation" class="w-full h-full object-cover">
+                                        <div class="overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white font-bold p-1">
+                                            <i class="fas fa-umbrella-beach mb-2 text-2xl"></i>
+                                            <span class="text-center text-sm">Relaxation</span>
+                                        </div>
+                                    </div>
+                                    <div class="mood-image rounded-lg overflow-hidden aspect-square" data-vibe="Cultural">
+                                        <img src="https://plus.unsplash.com/premium_photo-1689838026693-02c808d3c794?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y3VsdHVyYWx8ZW58MHx8MHx8fDA%3D" alt="Cultural" class="w-full h-full object-cover">
+                                        <div class="overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white font-bold p-1">
+                                            <i class="fas fa-landmark mb-2 text-2xl"></i>
+                                            <span class="text-center text-sm">Cultural</span>
+                                        </div>
+                                    </div>
+                                    <div class="mood-image rounded-lg overflow-hidden aspect-square" data-vibe="Luxury">
+                                        <img src="https://plus.unsplash.com/premium_photo-1682800179760-ddc15593bc21?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGx1eHVyeXxlbnwwfHwwfHx8MA%3D%3D" alt="Luxury" class="w-full h-full object-cover">
+                                        <div class="overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white font-bold p-1">
+                                            <i class="fas fa-gem mb-2 text-2xl"></i>
+                                            <span class="text-center text-sm">Luxury</span>
+                                        </div>
+                                    </div>
+                                    <div class="mood-image rounded-lg overflow-hidden aspect-square" data-vibe="Nightlife">
+                                        <img src="https://plus.unsplash.com/premium_photo-1683121131492-9ae8cdfea4f7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmlnaHRsaWZlfGVufDB8fDB8fHww" alt="Nightlife" class="w-full h-full object-cover">
+                                        <div class="overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white font-bold p-1">
+                                            <i class="fas fa-martini-glass-citrus mb-2 text-2xl"></i>
+                                            <span class="text-center text-sm">Nightlife</span>
+                                        </div>
+                                    </div>
+                                    <div class="mood-image rounded-lg overflow-hidden aspect-square" data-vibe="Foodie">
+                                        <img src="https://images.unsplash.com/photo-1695606393222-30f666a7d2ae?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGZvb2RpZXxlbnwwfHwwfHx8MA%3D%3D" alt="Foodie" class="w-full h-full object-cover">
+                                        <div class="overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white font-bold p-1">
+                                            <i class="fas fa-utensils mb-2 text-2xl"></i>
+                                            <span class="text-center text-sm">Foodie</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="destination" class="block text-sm font-medium text-slate-200 mb-2">Where to?</label>
+                                <input type="text" id="destination" name="destination" class="form-input w-full bg-slate-800/60 border-slate-600 rounded-lg py-3 px-4 focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition" placeholder="e.g., Kyoto, Japan" required>
+                            </div>
+
+                            <div class="flex items-center justify-between bg-slate-800/60 p-3 rounded-lg">
+                                <label for="offTheBeatenPath" class="text-sm font-medium text-slate-200">Find Hidden Gems?</label>
+                                <div class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="offTheBeatenPath" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-500"></div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="duration" class="block text-sm font-medium text-slate-200 mb-2">Duration (days)</label>
+                                    <input type="number" id="duration" name="duration" class="form-input w-full bg-slate-800/60 border-slate-600 rounded-lg py-3 px-4" placeholder="e.g., 5" min="1" required>
+                                </div>
+                                <div>
+                                    <label for="travelStyle" class="block text-sm font-medium text-slate-200 mb-2">Travel Style</label>
+                                    <select id="travelStyle" name="travelStyle" class="form-select w-full bg-slate-800/60 border-slate-600 rounded-lg py-3 px-4">
+                                        <option>Balanced</option>
+                                        <option>Relaxing</option>
+                                        <option>Fast-Paced</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-4 px-4 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg">
+                                <i class="fas fa-magic mr-2"></i>Generate My Itinerary
+                            </button>
+                        </form>
+                    </div>
+                </section>
+                
+                <div id="loading-spinner" class="hidden text-center py-20">
+                     <div class="relative w-48 h-48 mx-auto">
+                         <i class="fas fa-plane text-cyan-500 text-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 plane-animation"></i>
+                         <i class="fas fa-cloud text-slate-500 text-3xl absolute top-1/4 left-1/4 animate-pulse"></i>
+                         <i class="fas fa-cloud text-slate-600 text-4xl absolute bottom-1/4 right-1/4 animate-pulse" style="animation-delay: 0.5s;"></i>
+                    </div>
+                    <p class="text-xl mt-8 font-semibold text-slate-300" id="loading-text">Our AI is crafting your perfect trip...</p>
+                </div>
+
+                <section id="itinerary-section" class="hidden mt-10">
+                    <div id="itinerary-content-wrapper"></div>
+                </section>
+            </div>
+            
+            <div id="discover-page" class="page">
+                <h2 class="text-3xl font-extrabold text-white mb-6">Discover Itineraries</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="glassmorphism rounded-xl overflow-hidden cursor-pointer hover:shadow-cyan-500/20 shadow-lg transition-shadow">
+                        <img src="https://placehold.co/400x250/f97316/ffffff?text=Jaipur+Royalty" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg">A Week in Royal Jaipur</h3>
+                            <p class="text-sm text-slate-400 mt-1">By @TravelExplorer</p>
+                            <div class="flex items-center text-xs mt-3 space-x-4"><span><i class="fas fa-landmark mr-1 text-yellow-400"></i> Heritage</span><span><i class="fas fa-utensils mr-1 text-orange-400"></i> Food</span></div>
+                        </div>
+                    </div>
+                     <div class="glassmorphism rounded-xl overflow-hidden cursor-pointer hover:shadow-cyan-500/20 shadow-lg transition-shadow">
+                        <img src="https://placehold.co/400x250/22c55e/ffffff?text=Kerala+Backwaters" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg">5 Days of Serenity in Kerala</h3>
+                            <p class="text-sm text-slate-400 mt-1">By @NatureLover</p>
+                             <div class="flex items-center text-xs mt-3 space-x-4"><span><i class="fas fa-leaf mr-1 text-green-400"></i> Nature</span><span><i class="fas fa-ship mr-1 text-blue-400"></i> Relaxation</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="profile-page" class="page">
+                <h2 class="text-3xl font-extrabold text-white mb-6">Your Travel Profile</h2>
+                <div class="max-w-xl mx-auto glassmorphism p-6 rounded-xl">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-200 mb-2">Dietary Needs</label>
+                            <input type="text" id="dietary-needs" placeholder="e.g., Vegan, Gluten-Free" class="form-input w-full bg-slate-700 border-slate-600 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-200 mb-2">Accessibility Requirements</label>
+                            <input type="text" id="accessibility-needs" placeholder="e.g., Wheelchair accessible, Less walking" class="form-input w-full bg-slate-700 border-slate-600 rounded-lg">
+                        </div>
+                        <button id="save-profile-btn" class="w-full bg-cyan-500 text-white font-bold py-3 rounded-lg hover:bg-cyan-600 transition">Save Profile</button>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <div id="smart-notification" class="fixed bottom-20 sm:bottom-4 right-4 max-w-sm w-full glassmorphism p-4 rounded-lg shadow-lg z-50">
+    </div>
+    
+     <div id="detail-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 rounded-2xl shadow-xl max-w-lg w-full transform transition-all scale-95 opacity-0" id="detail-modal-content">
+            <img id="detail-modal-image" src="" alt="Place Image" class="w-full h-56 object-cover rounded-t-2xl">
+            <div class="p-6">
+                <h2 id="detail-modal-title" class="text-3xl font-bold text-white mb-3"></h2>
+                <p id="detail-modal-description" class="text-slate-300 mb-6"></p>
+                <button id="close-detail-modal" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-5 rounded-full transition duration-300 w-full">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="photo-upload-input" class="hidden" accept="image/*">
+
+    <div class="sm:hidden fixed bottom-0 left-0 right-0 bg-slate-800/90 backdrop-blur-sm p-2 flex justify-around">
+        <button class="nav-btn p-3 rounded-lg active" data-page="planner-page"><i class="fas fa-edit"></i></button>
+        <button class="nav-btn p-3 rounded-lg" data-page="discover-page"><i class="fas fa-compass"></i></button>
+        <button class="nav-btn p-3 rounded-lg" data-page="profile-page"><i class="fas fa-user"></i></button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

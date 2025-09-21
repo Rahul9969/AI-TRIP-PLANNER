@@ -1,0 +1,72 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0f172a;
+}
+.hero-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://plus.unsplash.com/premium_photo-1679830513880-67584d7327e2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dHJpcCUyMHBsYW5uZXIlMjBiYWNrZ3JvdW5kJTIwc29tdGhpbmclMjBkYXJrfGVufDB8fDB8fHww');
+    background-size: cover;
+    background-position: center;
+}
+.glassmorphism {
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.page { display: none; }
+.page.active { display: block; }
+.nav-btn.active { background-color: #06b6d4; color: white; }
+.mood-image {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+.mood-image:hover { transform: scale(1.05); }
+.mood-image.selected::after {
+    content: '✔';
+    position: absolute;
+    top: 8px; right: 8px;
+    background-color: #06b6d4; color: white;
+    border-radius: 50%;
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.7);
+}
+.mood-image .overlay {
+    transition: background-color 0.3s;
+}
+.mood-image:hover .overlay {
+    background-color: rgba(0,0,0,0.6);
+}
+.mood-image.selected .overlay {
+    background-color: rgba(6, 182, 212, 0.5);
+}
+#smart-notification {
+    transition: transform 0.5s ease-in-out;
+    transform: translateY(200%);
+}
+#smart-notification.show {
+    transform: translateY(0);
+}
+.iti-tab-btn.active {
+    background-color: #06b6d4;
+    color: white;
+}
+.iti-tab-btn {
+    background-color: rgba(55, 65, 81, 0.5);
+}
+.activity-item {
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+.activity-item:hover {
+    background-color: rgba(55, 65, 81, 0.7);
+}
+@keyframes plane-fly {
+    0% { transform: translateX(-150px) translateY(40px) rotate(-20deg); }
+    100% { transform: translateX(150px) translateY(-40px) rotate(10deg); }
+}
+.plane-animation {
+    animation: plane-fly 4s ease-in-out infinite alternate;
+}
+
