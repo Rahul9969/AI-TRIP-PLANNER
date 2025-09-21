@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 return `
                     <div class="glassmorphism rounded-2xl p-6 shadow-lg">
-                        <div class="flex items-center mb-4"><span class="bg-cyan-500 text-white text-sm font-bold px-3 py-1 rounded-full mr-3">Day ${day.day}</span><h3 class="text-2xl font-bold">${day.title}</h3></div>
+                        <div class="flex items-center mb-4"><span class="bg-cyan-500 text-white text-sm font-bold px-3 py-1 rounded-full mr-3">${day.day}</span><h3 class="text-2xl font-bold">${day.title}</h3></div>
                         <p class="text-slate-300 mb-6">${day.details}</p>
                         <div class="space-y-2 border-l-2 border-cyan-500/30 pl-4 ml-4">${activitiesHtml}</div>
                     </div>`;
@@ -380,5 +380,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     app.init();
 });
+
 
 
