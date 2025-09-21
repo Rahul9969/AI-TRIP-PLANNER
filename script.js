@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 destination: document.getElementById('destination').value,
                 duration: document.getElementById('duration').value,
                 travelStyle: document.getElementById('travelStyle').value,
-                offTheBeatenPath: document.getElementById('offTheBeatenPath').checked,
                 vibes: Array.from(this.selectedVibes),
                 profile: this.userProfile
             };
@@ -381,4 +380,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
     app.init();
 });
+
 
