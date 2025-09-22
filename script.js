@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let journalHTML = dailyItinerary.map(day => `
                 <div class="glassmorphism rounded-2xl p-6 shadow-lg">
-                     <h3 class="text-xl font-bold mb-4">Day ${day.day}: Add Your Memories</h3>
+                     <h3 class="text-xl font-bold mb-4">${day.day}: Add Your Memories</h3>
                      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div class="upload-slot aspect-square bg-slate-700 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-600 transition-colors"><i class="fas fa-plus fa-2x text-slate-500 pointer-events-none"></i></div>
                         <div class="upload-slot aspect-square bg-slate-700 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-600 transition-colors"><i class="fas fa-plus fa-2x text-slate-500 pointer-events-none"></i></div>
@@ -380,6 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     app.init();
 });
+
 
 
 
