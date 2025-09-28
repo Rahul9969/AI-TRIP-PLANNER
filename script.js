@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         async callGeminiAPI(data, task) {
-            const apiKey = "AIzaSyDCjv3pDNC40kL8Fz4ym6dKybD-uAXux4A";
+            const apiKey = "AIzaSyBkv1dXN3-JALMDtEPiyEp4-tEkQx6-ogQ";
             const model = 'gemini-1.5-flash-latest';
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
             let prompt = '';
@@ -380,6 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     app.init();
 });
+
 
 
 
