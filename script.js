@@ -342,16 +342,36 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         async callGeminiAPI(data, task) {
-            const apiKey = "AIzaSyBkv1dXN3-JALMDtEPiyEp4-tEkQx6-ogQ";
-            const model = 'gemini-1.5-flash-latest';
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-            let prompt = '';
+            const apiKey = "AIzaSyBkv1dXN3-JALMDtEPiyEp4-tEkQx6-ogQ"; 
+            let model = 'gemini-2.5-flash'; 
+            try {
+                const modelsResponse = await fetch(`https://generativelanguage.googleapis.com/v1/models?key=${apiKey}`);
+                const modelsData = await modelsResponse.json();
+                console.log("Available models:", modelsData.models);
+                const availableModel = modelsData.models.find(model => 
+                    model.supportedGenerationMethods && 
+                    model.supportedGenerationMethods.includes('generateContent')
+                );
+                
+                if (availableModel) {
+                    model = availableModel.name.split('/')[1];
+                    console.log("Using model:", model);
+                } else {
+                    console.warn('No suitable model found, using default');
+                }
+                
+            } catch (error) {
+                console.error("Error checking models:", error);
+                     }
+            
+            const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;         
+        let prompt = '';
             
             if (task === 'generateItinerary') {
                 const pathInstruction = data.offTheBeatenPath 
                     ? 'IMPORTANT: The user wants to avoid tourist traps. Focus exclusively on hidden gems, local favorites, and off-the-beaten-path locations. Do not recommend major, world-famous tourist attractions.'
                     : 'Include a mix of popular attractions and local spots.';
-
+            
                 prompt = `Create a travel itinerary for a ${data.duration}-day trip to ${data.destination}. Vibe: ${data.vibes.join(', ')}. Style: ${data.travelStyle}. ${pathInstruction} Profile: Dietary: ${data.profile.dietary || 'None'}, Accessibility: ${data.profile.accessibility || 'None'}. Return ONLY a valid JSON object with keys: "destination", "dailyItinerary". dailyItinerary is an array of objects, each with "day", "title", "details", and an "activities" array. Each activity must have "name", "description", "icon" (a valid Font Awesome class name like 'fa-utensils'), and "imageSearchTerm" (a specific, descriptive 2-4 word term for an image search, like 'Eiffel Tower Paris' or 'Tokyo street food night').`;
             } else if (task === 'getSpontaneitySuggestion') {
                 prompt = `Suggest one highly-rated, interesting, and quick activity or cafe near the center of ${data.destination} that can be done in the next hour. Return a JSON object: {"text": "suggestion"}`;
@@ -360,19 +380,83 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (task === 'generateTravelogue') {
                 prompt = `Based on this itinerary JSON, write a short, engaging, first-person travel blog post (2-3 paragraphs) summarizing the trip. Itinerary: ${JSON.stringify(data.dailyItinerary)}. Return a JSON object: {"travelogue": "your story..."}`;
             }
-            
             const payload = {
                 contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { responseMimeType: "application/json" }
+                generationConfig: { 
+                    temperature: 0.3,
+                    topK: 20,     
+                    topP: 0.8,   
+                    maxOutputTokens: 8192,
+                }
             };
 
             try {
-                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                const response = await fetch(apiUrl, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(payload) 
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API Error: ${response.status} - ${errorText}`);
+                }
+                
                 const result = await response.json();
-                return JSON.parse(result.candidates[0].content.parts[0].text);
+                console.log("Full API Response:", JSON.stringify(result, null, 2));
+                 if (!result || !result.candidates || !Array.isArray(result.candidates) || result.candidates.length === 0) {
+                    console.error("Response structure issue - candidates:", result);
+                    throw new Error('Invalid API response: missing candidates array');
+                }
+                
+                const candidate = result.candidates[0];
+                console.log("First candidate:", JSON.stringify(candidate, null, 2)); 
+                 let text = null;
+                 if (candidate.content && candidate.content.parts && Array.isArray(candidate.content.parts) && candidate.content.parts.length > 0) {
+                    text = candidate.content.parts[0].text;
+                    console.log("Found text in content.parts[0].text");
+                }
+                else if (candidate.content && candidate.content.text) {
+                    text = candidate.content.text;
+                    console.log("Found text in content.text");
+                }
+                else if (candidate.parts && Array.isArray(candidate.parts) && candidate.parts.length > 0) {
+                    text = candidate.parts[0].text;
+                    console.log("Found text in parts[0].text");
+                }
+                else if (candidate.text) {
+                    text = candidate.text;
+                    console.log("Found text in candidate.text");
+                }
+                else {
+                   const possibleFields = ['text', 'content', 'message', 'response', 'output'];
+                    for (const field of possibleFields) {
+                        if (candidate[field]) {
+                            text = candidate[field];
+                            console.log(`Found text in candidate.${field}`);
+                            break;
+                        }
+                    }
+                }
+                
+                if (!text) {
+                    console.error("Could not find text in any field. Available fields:", Object.keys(candidate));
+                    throw new Error('Invalid API response: no text content found');
+                }
+                
+                console.log("Extracted text (first 200 chars):", text.substring(0, 200) + "...");
+               let cleanText = text.trim();
+                 cleanText = cleanText.replace(/^```(?:json)?\s*\n?/m, ''); 
+                 cleanText = cleanText.replace(/\n?```\s*$/m, ''); 
+                 cleanText = cleanText.trim();
+                 
+                 console.log("Cleaned text (first 200 chars):", cleanText.substring(0, 200) + "...");
+                 
+                 return JSON.parse(cleanText);
             } catch (error) {
                 console.error("Gemini API call failed:", error);
+             
+                alert(`API Error: ${error.message}. Please check your API key and try again.`);
                 return null;
             }
         }
@@ -380,6 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     app.init();
 });
+
 
 
 
